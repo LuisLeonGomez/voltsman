@@ -1,0 +1,35 @@
+<section class="contacto" id="contacto">
+  <div class="contacto__contenido">
+    <h2>Contacto</h2>
+    <h3>Cuéntanos qué necesitas y te enviamos una propuesta</h3>
+    <p class="contacto__bajada">
+      Completa el formulario o escríbenos directo por WhatsApp.
+    </p>
+
+    <div class="contacto__grid">
+      <app-contact-form />
+
+      <div class="contacto__datos">
+        <app-whatsapp-button [mensaje]="'Hola, quiero cotizar un proyecto'">
+          Escríbenos por WhatsApp
+        </app-whatsapp-button>
+        <ul>
+          <li>
+            <span class="contacto__etiqueta">WhatsApp</span>
+            <a [href]="linkWhatsapp()" target="_blank" rel="noopener">{{ empresa.whatsappDisplay }}</a>
+          </li>
+          @if (empresa.correo) {
+            <li>
+              <span class="contacto__etiqueta">Correo</span>
+              <a href="mailto:{{ empresa.correo }}">{{ empresa.correo }}</a>
+            </li>
+          }
+          <li>
+            <span class="contacto__etiqueta">Cobertura</span>
+            {{ empresa.cobertura }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

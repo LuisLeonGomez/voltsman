@@ -1,0 +1,29 @@
+<footer class="site-footer">
+  <div class="site-footer__grid">
+    <div>
+      <p class="site-footer__nombre">{{ empresa.nombre }}</p>
+      <p>{{ empresa.eslogan }}</p>
+    </div>
+
+    <div>
+      <p class="site-footer__titulo">Contacto</p>
+      <p>WhatsApp: {{ empresa.whatsappDisplay }}</p>
+      @if (empresa.correo) {
+        <p>Correo: {{ empresa.correo }}</p>
+      }
+      <p>Cobertura: {{ empresa.cobertura }}</p>
+    </div>
+
+    <div>
+      <p class="site-footer__titulo">Navegación</p>
+      <a routerLink="/" fragment="servicios">Servicios</a>
+      <a routerLink="/galeria">Proyectos</a>
+      <a routerLink="/" fragment="contacto">Contacto</a>
+    </div>
+  </div>
+
+  <div class="site-footer__bottom">
+    <a [href]="linkWhatsapp()" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+    <p>{{ empresa.nombre }}. Todos los derechos reservados.</p>
+  </div>
+</footer>

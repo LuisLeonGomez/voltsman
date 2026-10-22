@@ -1,0 +1,18 @@
+<section class="hero">
+  <div class="hero__contenido">
+    <p class="hero__chip">Electricidad · Estructuras metálicas · Gasfitería</p>
+    <h1>{{ empresa.nombre }}</h1>
+    <p class="hero__eslogan">{{ empresa.eslogan }}</p>
+    <p class="hero__descripcion">
+      <!-- TODO cliente: validar esta bajada. Borrador basado en el .txt de referencia. -->
+      Ejecutamos obra nueva, habilitaciones y mantención para casas, locales e industrias,
+      en electricidad, estructuras metálicas y gasfitería. Cobertura: {{ empresa.cobertura }}.
+    </p>
+    <div class="hero__acciones">
+      <app-whatsapp-button [mensaje]="'Hola, quiero cotizar un proyecto'">
+        Escríbenos por WhatsApp
+      </app-whatsapp-button>
+      <a class="hero__link-secundario" href="#contacto">Cotiza tu proyecto</a>
+    </div>
+  </div>
+</section>

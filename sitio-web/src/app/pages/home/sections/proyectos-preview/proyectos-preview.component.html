@@ -1,0 +1,26 @@
+<section class="proyectos-preview">
+  <div class="proyectos-preview__contenido">
+    <h2>Proyectos</h2>
+    <h3>Trabajos en nuestras tres especialidades</h3>
+    <!-- TODO cliente: fotos pendientes de aprobación final
+         (ver fotografias_reales/seleccion_web/MANIFEST.md). -->
+    <p class="proyectos-preview__bajada">Una muestra de nuestros trabajos reales.</p>
+
+    <div class="proyectos-preview__grid">
+      @for (destacada of destacadas; track destacada.categoria.id) {
+        <a
+          class="proyectos-preview__tarjeta"
+          [routerLink]="['/galeria', destacada.categoria.id]"
+          [attr.aria-label]="'Ver proyectos de ' + destacada.categoria.titulo"
+        >
+          <figure>
+            <img [src]="destacada.foto.src" [alt]="destacada.foto.alt" loading="lazy" />
+            <figcaption>{{ destacada.categoria.titulo }}</figcaption>
+          </figure>
+        </a>
+      }
+    </div>
+
+    <a class="proyectos-preview__link" routerLink="/galeria">Ver todas las obras</a>
+  </div>
+</section>

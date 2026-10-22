@@ -1,0 +1,60 @@
+<section class="servicios" id="servicios">
+  <div class="servicios__contenido">
+    <h2>Servicios</h2>
+    <h3>Electricidad, estructuras metálicas y proyectos sanitarios</h3>
+    <!-- TODO cliente: validar esta bajada. Borrador basado en el .txt de referencia. -->
+    <p class="servicios__bajada">
+      Trabajos domiciliarios, comerciales e industriales. Cobertura: todo Chile.
+    </p>
+
+    <div class="servicios__grid">
+      @for (servicio of servicios; track servicio.id) {
+        <article
+          class="servicios__card"
+          [class.servicios__card--abierta]="abiertas().has(servicio.id)"
+          (click)="alternar(servicio.id)"
+          (keydown.enter)="alternar(servicio.id)"
+          tabindex="0"
+        >
+          <!-- Foto por especialidad: soltar en src/assets/images/servicios/<id>.jpeg -->
+          <div class="servicios__media">
+            @if (!falladas().has(servicio.id)) {
+              <img
+                [src]="'assets/images/servicios/' + servicio.id + '.jpeg'"
+                [alt]="'Trabajo de ' + servicio.titulo"
+                loading="lazy"
+                (error)="marcarFalla(servicio.id)"
+              />
+            } @else {
+              <div class="servicios__placeholder" aria-hidden="true">
+                <span>Foto de {{ servicio.titulo }}</span>
+              </div>
+            }
+          </div>
+
+          <h4>{{ servicio.titulo }}</h4>
+
+          <div class="servicios__detalle">
+            <div class="servicios__detalle-interno">
+              <p class="servicios__resumen">{{ servicio.resumen }}</p>
+              @if (servicio.detalle.length > 0) {
+                <ul>
+                  @for (item of servicio.detalle; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              } @else {
+                <!-- TODO cliente: el cliente aún no entregó el detalle técnico de
+                     estructuras metálicas. No agregar alcances sin su confirmación. -->
+                <p class="servicios__pendiente">
+                  Detalle de esta especialidad en preparación. Escríbenos por WhatsApp
+                  y te contamos qué podemos hacer por tu proyecto.
+                </p>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

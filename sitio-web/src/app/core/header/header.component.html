@@ -1,0 +1,36 @@
+<header class="site-header">
+  <div class="site-header__bar">
+    <a routerLink="/" class="site-header__brand" (click)="cerrarMenu()">
+      <!-- TODO cliente: reemplazar este bloque por el logo real (<img src="assets/logo.svg" alt="...">). -->
+      <span class="site-header__logo-placeholder" aria-label="Espacio reservado para el logo">LOGO</span>
+      <span class="site-header__nombre">{{ empresa.nombre }}</span>
+    </a>
+
+    <button
+      class="site-header__toggle"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuAbierto()"
+      aria-controls="menu-principal"
+      aria-label="Abrir menú"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="menu-principal" class="site-header__nav" [class.site-header__nav--abierto]="menuAbierto()">
+      <a routerLink="/" fragment="servicios" (click)="cerrarMenu()">Servicios</a>
+      <a routerLink="/" fragment="como-trabajamos" (click)="cerrarMenu()">Cómo trabajamos</a>
+      <a routerLink="/galeria" routerLinkActive="activo" (click)="cerrarMenu()">Proyectos</a>
+      <a routerLink="/" fragment="contacto" (click)="cerrarMenu()">Contacto</a>
+      <a
+        class="site-header__whatsapp"
+        [href]="linkWhatsapp('Hola, quiero cotizar un proyecto')"
+        target="_blank"
+        rel="noopener"
+        (click)="cerrarMenu()"
+      >
+        Escríbenos por WhatsApp
+      </a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,96 @@
+.hero {
+  color: #f8fafc;
+  padding: 6rem 1.25rem;
+  min-height: 100vh;
+  min-height: 100svh; /* móvil: el hero nunca queda cortado por la barra de URL */
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.94)),
+    url('/assets/images/electricidad/electricidad-01.jpeg') center / cover no-repeat;
+}
+
+.hero__contenido {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@keyframes hero-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero__contenido > * {
+  animation: hero-aparecer 400ms var(--ease-out) backwards;
+}
+
+.hero__contenido > :nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.hero__contenido > :nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.hero__contenido > :nth-child(4) {
+  animation-delay: 180ms;
+}
+
+.hero__chip {
+  display: inline-block;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(15, 23, 42, 0.5);
+  color: #cbd5e1;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.hero__contenido h1 {
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+
+.hero__eslogan {
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  color: var(--azul-suave);
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.hero__descripcion {
+  color: #cbd5e1;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+.hero__acciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero__link-secundario {
+  color: #f8fafc;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 0.5rem;
+}
+
+.hero__link-secundario:active {
+  opacity: 0.7;
+}

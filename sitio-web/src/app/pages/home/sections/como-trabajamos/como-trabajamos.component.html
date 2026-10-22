@@ -1,0 +1,22 @@
+<section class="como-trabajamos" id="como-trabajamos">
+  <div class="como-trabajamos__contenido">
+    <h2>Cómo trabajamos</h2>
+    <h3>De la primera visita a la entrega con pruebas</h3>
+    <!--
+      TODO cliente: los pasos y descripciones vienen del copy de referencia (.txt de
+      otra IA) y describen un flujo típico del rubro. Validar o reemplazar antes de
+      publicar: no confirmar permisos, encargados de obra ni garantías sin el visto
+      bueno del dueño.
+    -->
+
+    <ol class="como-trabajamos__pasos">
+      @for (paso of pasos; track paso.numero) {
+        <li class="como-trabajamos__paso">
+          <span class="como-trabajamos__numero">{{ paso.numero }}</span>
+          <h4>{{ paso.titulo }}</h4>
+          <p>{{ paso.descripcion }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

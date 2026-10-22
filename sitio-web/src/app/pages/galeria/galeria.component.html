@@ -1,0 +1,38 @@
+<section class="galeria">
+  <div class="galeria__contenido">
+    <h1>Galería de obras</h1>
+    <!-- TODO cliente: fotos pendientes de aprobación final
+         (ver fotografias_reales/seleccion_web/MANIFEST.md). -->
+    <p class="galeria__bajada">Trabajos reales organizados por especialidad.</p>
+
+    <div class="galeria__filtros" role="group" aria-label="Filtrar por especialidad">
+      <a
+        routerLink="/galeria"
+        routerLinkActive="galeria__filtro--activo"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Todas
+      </a>
+      @for (categoria of categorias; track categoria.id) {
+        <a
+          [routerLink]="['/galeria', categoria.id]"
+          routerLinkActive="galeria__filtro--activo"
+        >
+          {{ categoria.titulo }}
+        </a>
+      }
+    </div>
+
+    @for (categoria of visibles(); track categoria.id) {
+      <h2>{{ categoria.titulo }}</h2>
+      @if (categoria.video; as video) {
+        <video class="galeria__video" controls preload="metadata" [src]="video"></video>
+      }
+      <div class="galeria__grid">
+        @for (foto of categoria.fotos; track foto.src) {
+          <img [src]="foto.src" [alt]="foto.alt" loading="lazy" />
+        }
+      </div>
+    }
+  </div>
+</section>

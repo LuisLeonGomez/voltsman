@@ -1,0 +1,57 @@
+<form class="contact-form" (ngSubmit)="enviar()" #form="ngForm">
+  <div class="contact-form__row">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" [(ngModel)]="datos.nombre" required />
+  </div>
+
+  <div class="contact-form__row">
+    <label for="telefono">Teléfono</label>
+    <input id="telefono" name="telefono" type="tel" placeholder="+56 9 1234 5678" [(ngModel)]="datos.telefono" required />
+  </div>
+
+  <div class="contact-form__row">
+    <label for="correo">Correo</label>
+    <input id="correo" name="correo" type="email" placeholder="tu@correo.cl" [(ngModel)]="datos.correo" />
+  </div>
+
+  <div class="contact-form__row">
+    <label for="servicio">Servicio de interés</label>
+    <select id="servicio" name="servicio" [(ngModel)]="datos.servicio">
+      @for (servicio of servicios; track servicio.id) {
+        <option [value]="servicio.id">{{ servicio.titulo }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="contact-form__row">
+    <label for="mensaje">Cuéntanos del proyecto</label>
+    <textarea id="mensaje" name="mensaje" rows="4" placeholder="Qué necesitas, dónde y para cuándo" [(ngModel)]="datos.mensaje" required></textarea>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid || estado() === 'enviando'">
+    @if (estado() === 'enviando') {
+      Enviando...
+    } @else {
+      Enviar solicitud
+    }
+  </button>
+
+  @if (estado() === 'exito') {
+    <p class="contact-form__mensaje contact-form__mensaje--ok">
+      Mensaje enviado. Te responderemos a la brevedad.
+    </p>
+  }
+  @if (estado() === 'error') {
+    <p class="contact-form__mensaje contact-form__mensaje--error">
+      No pudimos enviar tu mensaje. Por favor escríbenos por WhatsApp.
+    </p>
+  }
+  @if (estado() === 'sin-backend') {
+    <p class="contact-form__mensaje contact-form__mensaje--error">
+      El envío por formulario aún no está disponible. Por favor escríbenos por WhatsApp
+      mientras lo habilitamos.
+    </p>
+  }
+
+  <p class="contact-form__nota">Usamos tus datos solo para responder esta solicitud.</p>
+</form>

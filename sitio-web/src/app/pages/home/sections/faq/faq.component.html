@@ -1,0 +1,21 @@
+<section class="faq">
+  <div class="faq__contenido">
+    <h2>Preguntas frecuentes</h2>
+    <h3>Lo que nos preguntan antes de cotizar</h3>
+    <!-- TODO cliente: las respuestas son borrador pendiente de validación
+         (ver comentario en shared/content.ts). -->
+
+    <div class="faq__lista">
+      @for (item of preguntas; track item.pregunta) {
+        <details class="faq__item">
+          <summary>{{ item.pregunta }}</summary>
+          <p>{{ item.respuesta }}</p>
+        </details>
+      }
+    </div>
+
+    <p class="faq__cierre">
+      ¿No encuentras tu respuesta? Escríbenos por WhatsApp y te responde el equipo que ejecuta las obras.
+    </p>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+<section class="quienes-somos" id="quienes-somos">
+  <div class="quienes-somos__contenido">
+    <div class="quienes-somos__texto">
+      <h2>Quiénes somos</h2>
+      <h3>Obra ejecutada por nuestro propio equipo</h3>
+      <!--
+        TODO cliente: todo este bloque es borrador tomado del .txt de referencia
+        (generado por otra IA). Afirmaciones como "no subcontratamos" o "garantía
+        por escrito" deben confirmarse o eliminarse antes de publicar.
+      -->
+      <p>
+        Tomamos proyectos residenciales, comerciales e industriales, desde la cotización
+        hasta la entrega con pruebas.
+      </p>
+      <ul class="quienes-somos__lista">
+        <li>Instaladores, soldadores y gasfíteres propios.</li>
+        <li>Materiales y equipos certificados, con garantía por escrito al entregar.</li>
+        <li>Recinto protegido y limpio al cierre de cada jornada, con protocolos de seguridad en faena.</li>
+      </ul>
+    </div>
+
+    <!-- Espacio reservado para la foto del cliente. Al soltarla en
+         src/assets/images/equipo/quienes-somos.jpeg cubre el recuadro por sí sola. -->
+    <div class="quienes-somos__media">
+      <div class="quienes-somos__placeholder" aria-hidden="true">
+        <span>Foto del equipo o de una obra</span>
+      </div>
+      @if (!imagenRota()) {
+        <img
+          [src]="rutaImagen"
+          alt="Nuestro equipo en faena"
+          loading="lazy"
+          [class.quienes-somos__img--visible]="imagenLista()"
+          (load)="imagenOk()"
+          (error)="imagenFallo()"
+        />
+      }
+    </div>
+  </div>
+</section>
