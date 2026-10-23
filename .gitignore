@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Build de Angular
+sitio-web/dist/
+sitio-web/.angular/
+
+# Skills y configuración local del asistente (no es código del proyecto)
+.abacusai/
+
+# Entorno / sistema
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+
+# Variables de entorno / secretos
+.env
+.env.*
+!.env.example
