@@ -1,0 +1,75 @@
+name: CI/CD sitio web
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+defaults:
+  run:
+    working-directory: sitio-web
+
+jobs:
+  ci:
+    name: Lint, test y build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: sitio-web/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests (Chrome headless)
+        run: npm run test:ci
+
+      - name: Build de produccion
+        run: npm run build
+
+      - name: Subir artefacto del build
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitio-web-build
+          path: sitio-web/dist/sitio-web-constructora/browser
+          retention-days: 7
+
+  deploy:
+    name: Deploy a Cloudflare Pages
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: sitio-web/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build de produccion
+        run: npm run build
+
+      - name: Deploy con Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: sitio-web
+          command: pages deploy dist/sitio-web-constructora/browser --project-name=voltsman
