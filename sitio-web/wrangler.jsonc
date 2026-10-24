@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "voltsman",
+  "compatibility_date": "2026-10-24",
+  "assets": {
+    "directory": "./dist/sitio-web-constructora/browser",
+    "not_found_handling": "single-page-application"
+  }
+}
