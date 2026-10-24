@@ -8,8 +8,10 @@ sitio-web/.angular/
 # Skills y configuración local del asistente (no es código del proyecto)
 .abacusai/
 
-# Material de referencia (no se usa en el código del sitio)
-banco_fotos/
+## Fotos originales y banco de imágenes (fuentes de trabajo, no parte del sitio):
+## viven fuera del repo, en C:\Users\luisl\Downloads\fotos\ (mismo equipo,
+## fuera de este workspace de git). Las fotos finales que sí usa el sitio
+## están copiadas en sitio-web/src/assets/images/.
 
 # Caché de Wrangler
 sitio-web/tmp/

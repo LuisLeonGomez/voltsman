@@ -158,7 +158,7 @@ Pendiente real:
 
 Este documento es el punto de reanudación para un nuevo chat. Resume exactamente dónde quedó el trabajo y qué falta.
 
-**Nota:** la sección 11.bis (más abajo) tiene el detalle de lo avanzado entre el 17 y el 23 de octubre (nombre real, certificación SEC, corrección de un bug real de visibilidad de fotos, banco de fotos decorativas y estado de las fotos de servicios). Esta sección 11 original se deja tal cual quedó el 17-oct como referencia histórica; para el estado más reciente, ir directo a 11.bis.
+**Nota:** la sección 11.ter (más abajo) es la más reciente (24-oct: CI/CD completo con GitHub Actions + deploy nativo de Cloudflare, limpieza del repo, protección de `main`); 11.bis tiene el detalle del 17 al 23 de octubre (nombre real, certificación SEC, corrección de un bug real de visibilidad de fotos, banco de fotos decorativas y estado de las fotos de servicios). Estas secciones 11 y 11.bis originales se dejan tal cual como referencia histórica; para el estado más reciente, ir directo a 11.ter.
 
 ### Lo que YA está hecho
 
@@ -225,9 +225,109 @@ Este documento es el punto de reanudación para un nuevo chat. Resume exactament
 
 ### Pendientes (vigentes, no repetir lo ya resuelto arriba)
 
-1. Reemplazar `servicios/electricidad.jpeg` por un JPEG real (ver punto 6 arriba).
-2. Las 8 preguntas ya enviadas al cliente (marca/logo más allá del nombre, contacto visible, años de experiencia y tamaño del equipo, detalle técnico de estructuras metálicas, permisos/garantía, pasos reales de trabajo, reseñas, envío de fotos) — revisar cuáles ya se respondieron (nombre y SEC sí; falta confirmar el resto) y actualizar `// TODO cliente` en `shared/content.ts` y las plantillas a medida que lleguen respuestas.
-3. Aprobación final de la preselección de fotos reales (`fotografias_reales/seleccion_web/MANIFEST.md`).
-4. Confirmar y documentar el flujo real de ramas (dev/main) y conectar Cloudflare Pages para despliegue automático.
-5. Backend FastAPI del formulario de contacto (sigue sin construir) y dominio .cl (sigue sin registrar).
-6. Nada de lo nuevo en este período se ha subido a git todavía (los cambios de este chat están solo en el working directory local); el desarrollador decide cuándo commitear.
+1. **Reemplazar `servicios/electricidad.jpeg` por un JPEG real** (ver punto 6 arriba). El archivo actual es un AVIF con extensión falsa; necesita ser exportado como JPEG verdadero desde la app Fotos de Windows o similar.
+
+2. **Las 8 preguntas al cliente**: revisar cuáles ya se respondieron (nombre "Volstman" ✓, certificación SEC ✓; falta confirmar el resto) y actualizar `// TODO cliente` en `shared/content.ts` y las plantillas a medida que lleguen respuestas.
+
+3. **Aprobación final de la preselección de fotos reales** (`fotografias_reales/seleccion_web/MANIFEST.md`).
+
+4. **Confirmar y documentar el flujo real de ramas** (dev/main) y conectar Cloudflare Pages para despliegue automático.
+
+5. **Backend FastAPI del formulario de contacto**: PAUSADO. Decisión pendiente: ¿repositorio separado (`voltsman-backend`) o monorepo (carpeta `backend/` dentro de `voltsman`)? Una vez decidido, crear la estructura y el código. Dominio .cl sigue sin registrar.
+
+6. **Git**: los cambios de este chat (nombre, SEC, corrección de bug de foto, fotos decorativas) están en el working directory local. El desarrollador decide cuándo commitear. Nota: el repositorio ya tiene commits posteriores al 17-oct (c0edbbf, 7287bab, f71441f, f44e555, adf860a), lo que indica que hubo trabajo adicional no documentado en este chat — revisar el historial de commits en GitHub para sincronizar el contexto si es necesario.
+
+## 11.ter ESTADO ACTUAL DEL TRABAJO — actualizado al 24-oct-2026
+
+### Backend del formulario: EN PAUSA (decisión pendiente)
+
+El desarrollador preguntó si el backend FastAPI del formulario debe ir en otro repositorio y otro workspace. Se le explicaron dos opciones (repo separado tipo `voltsman-backend`, o monorepo con carpeta `backend/` dentro de `voltsman`), sin inclinarse por ninguna. **Queda pausado hasta que el desarrollador decida**; no construir nada de esto sin que lo pida explícitamente.
+
+### Cambio de criterio importante: mostrar TODAS las fotos, no una selección curada
+
+El cliente pidió expresamente mostrar todas las fotos que ha enviado (fue mandando más con el tiempo, guardadas por el desarrollador fuera de `fotografias_reales/` y luego movidas ahí). Esto reemplaza el criterio anterior ("el desarrollador preselecciona las mejores, el cliente aprueba", sección 7 de este documento). Aplicado:
+
+- `fotografias_reales/seleccion_web/` ya NO es una curación: es una copia 1:1 renombrada de absolutamente todas las fotos de cada carpeta de origen. Su `MANIFEST.md` se actualizó para reflejar esto.
+- `sitio-web/src/assets/images/<categoria>/` se regeneró con el mismo criterio: **electricidad (29 fotos + 1 video), gasfitería-sanitarios (22 fotos), estructuras-metálicas (11 fotos)**. Si el cliente manda fotos nuevas más adelante, hay que repetir el proceso completo (copiar TODO de nuevo desde `fotografias_reales/<categoria>/`, no solo agregar las nuevas) para no dejar ninguna fuera.
+- `shared/gallery-data.ts` se reescribió con una función `generarFotos()` para no repetir el patrón a mano por categoría.
+
+### Categoría nueva: "Tabiquería"
+
+El cliente pidió agregar esta especialidad. Como el código ya era genérico (ningún componente tenía las categorías hardcodeadas, solo leían los arrays `SERVICIOS`/`GALERIA`), agregarla fue solo cuestión de datos:
+
+- `shared/content.ts`: nuevo `Servicio` con `id: 'tabiqueria'`, `detalle: []` y `pendiente: true` (el cliente aún no entregó el detalle técnico, igual que pasa con estructuras metálicas).
+- `shared/gallery-data.ts`: nueva `CategoriaGaleria` con sus 6 fotos (`fotografias_reales/tabiqueria/`), ruta `/galeria/tabiqueria` funciona sola (las rutas en `app.routes.ts` son genéricas con `:categoriaId`).
+- Las tarjetas de "Servicios" y "Proyectos" en la home muestran la nueva categoría automáticamente (son `@for` sobre los arrays).
+- **Pendiente**: foto para la tarjeta de servicio en `src/assets/images/servicios/tabiqueria.jpeg` (mientras no exista, se ve el recuadro placeholder "Foto de Tabiquería", sin errores) y el detalle técnico real de este servicio.
+- Textos genéricos ajustados: "Trabajos en nuestras tres especialidades" → "Trabajos en nuestras especialidades"; subtítulo de Servicios ahora menciona electricidad, estructuras metálicas, tabiquería y proyectos sanitarios; `<title>` de las rutas pasó de "Empresa constructora" a "Volstman".
+
+### Limpieza de `fotografias_reales/estructuras metalicas/`
+
+Esa carpeta tenía basura ajena al proyecto: un HTML guardado de **Relume.ai** (herramienta de diseño, visitada por error) y su carpeta `_files/` (~19 MB de JS/CSS/imágenes de esa página). El desarrollador la eliminó a mano. También existía una subcarpeta `WhatsApp Unknown 2026-10-16.../` con las fotos reales; tras la limpieza quedaron 11 fotos directas en `estructuras metalicas/`, ya usadas.
+
+### Ubicación definitiva de las fotos fuente: `C:\Users\luisl\Downloads\fotos\`
+
+Resuelto (24-oct-2026): el desarrollador creó `C:\Users\luisl\Downloads\fotos\`, FUERA del repositorio git (`proyecto construcciones enrique\`), y movió ahí todo lo que antes vivía en `fotografias_reales/` y `banco_fotos/`: las carpetas de origen por especialidad (`electricidad/`, `estructuras metalicas/`, `gasfiteria y proyectos sanitarios/`, `tabiqueria/`), el `banco_fotos/` de imágenes de stock, y la carpeta `seleccion_web/` (la copia renombrada 1:1 que sí se usa como fuente para copiar a `sitio-web/src/assets/images/`). La carpeta `fotografias_reales/` dentro del repo quedó vacía y se eliminó. El `.gitignore` ya no necesita reglas para estas carpetas porque physically no están dentro del repo. El `MANIFEST.md` de `seleccion_web/` se actualizó con las rutas nuevas.
+
+Flujo a futuro cuando el cliente mande fotos nuevas: agregarlas en `Downloads/fotos/<categoria>/`, regenerar `Downloads/fotos/seleccion_web/<categoria>/` (renombrar y copiar TODO, no solo lo nuevo) y copiar ese resultado a `sitio-web/src/assets/images/<categoria>/` dentro del repo.
+
+### Pendientes nuevos (sumar a los de la sección 11.bis)
+
+1. Foto de tarjeta de servicio para Tabiquería (`servicios/tabiqueria.jpeg`).
+2. Detalle técnico real de Tabiquería (y seguir pendiente el de Estructuras metálicas).
+3. Confirmar con el cliente si las 11 fotos de estructuras metálicas (antes se usaban solo 4, ahora se muestran las 11 completas) son apropiadas para mostrar todas — por ejemplo, algunas eran "de obra general" donde el acero solo aparecía de fondo.
+4. El desarrollador debe mover `fotografias_reales/` fuera del repo cuando pueda (ya no se subirá por accidente gracias al `.gitignore`, pero sigue físicamente dentro de la carpeta del repo hasta que la mueva).
+
+## 11.ter ESTADO ACTUAL DEL TRABAJO — actualizado al 24-oct-2026 (CI/CD completo y funcionando)
+
+Esta sección reemplaza como "estado vigente" a las anteriores. El punto 4 de pendientes del 17-oct (GitHub + despliegue automático) quedó **RESUELTO**. Detalle completo abajo.
+
+### Infraestructura CI/CD implementada (todo verificado funcionando)
+
+**Pipeline de calidad con GitHub Actions** (`.github/workflows/ci-cd.yml`):
+- Un solo job `ci` que corre en cada push y PR a `main` y `dev`: checkout → Node 20 con caché de npm → `npm ci` → `npm run lint` → `npm run test:ci` → `npm run build` → sube el artefacto del build (7 días de retención).
+- El job NO despliega: el deploy lo hace Cloudflare de forma nativa (ver abajo). Se intentó primero con `cloudflare/wrangler-action@v3` y se abandonó por problemas de versión de Wrangler y permisos del token.
+- `working-directory: sitio-web` en el workflow: los comandos corren ahí dentro.
+
+**Tests configurados por primera vez**:
+- `sitio-web/karma.conf.js` (launcher `ChromeHeadlessCI` con `--no-sandbox --disable-gpu --disable-dev-shm-usage`), `tsconfig.spec.json`, y un smoke test en `app.component.spec.ts` (verifica que se renderiza el título). Todo pasa (1 test SUCCESS).
+- `package.json`: script `test:ci` = `ng test --watch=false --browsers=ChromeHeadlessCI`.
+- ESLint con `@angular-eslint` (generado con `ng add`), config en `sitio-web/eslint.config.js`, lint pasa.
+
+**Deploy: Cloudflare Workers con static assets, conectado por Git** (NO GitHub Actions, NO Pages clásico):
+- Cloudflare fusionó Pages en "Workers & Pages": el proyecto es un **Worker** llamado `voltsman` (no un proyecto Pages). URL de producción: `https://voltsman.luisleongomez98.workers.dev/`.
+- `sitio-web/wrangler.jsonc` (en AMBAS ramas, debe ser idéntico): `{"name":"voltsman","compatibility_date":"2026-10-24","assets":{"directory":"./dist/sitio-web-constructora/browser","not_found_handling":"single-page-application"},"previews":{}}`. El bloque `"previews": {}` es obligatorio para que `wrangler preview` funcione (se descubrió por error en el preview de dev; ese fix está en `dev` y aún no se fusionó a `main` — pendiente).
+- Conexión: botón "Connect to a repository" del propio Worker en Cloudflare. Production branch: `main`. Preview builds activados para el resto de ramas (`dev` genera preview deploy automático). Path: `/`.
+- Commands configurados en el dashboard de Cloudflare (Settings → Build) — la regla es que CADA comando debe hacer `cd sitio-web &&` porque el "Path" global es la raíz del repo:
+  - Build: `cd sitio-web && npm install && npm run build`
+  - Deploy: `cd sitio-web && npx wrangler deploy`
+  - Preview: `cd sitio-web && npx wrangler preview`
+- Errores ya resueltos (para no repetir): "Missing entry-point" = Wrangler v3 no soporta config solo-assets (usar v4+); "Unknown argument: deploy." = punto final copiado de más en el comando; "Could not detect a directory containing static files" = wrangler no encuentra su config si se ejecuta desde la raíz (falta el `cd sitio-web &&`); "missing a previews block" = falta `"previews": {}` en wrangler.jsonc.
+- El token/API se creó solo mediante la integración nativa de Cloudflare (permisos amplios correctos automáticamente). NUNCA pegar tokens en el chat (uno se pegó por accidente y fue rotado).
+
+### Limpieza del repositorio
+
+- El repo había commiteado por accidente `node_modules/`, `dist/`, `.angular/`, `.abacusai/` (36.581 archivos trackeados). Se limpió con `git rm -r --cached` → quedaron ~200 archivos. `.gitignore` actual (raíz) excluye: `node_modules/`, `sitio-web/dist/`, `sitio-web/.angular/`, `.abacusai/`, `banco_fotos/` (material de referencia, no se usa en código), `sitio-web/tmp/` (caché de wrangler), `.env`, logs.
+- `log_error.txt` en la raíz es el scratch del desarrollador para pegar logs de Cloudflare: untracked, se sobreescribe cada vez. Siempre releerlo completo antes de diagnosticar; no reutilizar lecturas anteriores.
+
+### Flujo de ramas (ya definido y en uso)
+
+- `main` = producción (Cloudflare despliega lo que llega a `main`). `dev` = desarrollo (Cloudflare genera preview deploy). Ambas están **idénticas** al 24-oct (se sincronizaron con `git checkout dev && git reset --hard origin/main` + `git push --force-with-lease origin dev`, descartando 4 commits obsoletos de la etapa con GitHub Actions deploy).
+- Lección aprendida dos veces: un cherry-pick no arrastra archivos de commits anteriores (`wrangler.jsonc` se quedó solo en `dev` y faltó en `main`); mantener las ramas idénticas o sincronizadas por PR.
+- **Protección de `main` (ruleset en GitHub, el desarrollador lo estaba creando al 24-oct)**: Settings → Rules → Rulesets → New branch ruleset, target "Include default branch", activar: Require a pull request before merging (Required approvals = 0, porque el dueño no puede aprobar sus propios PRs — el clic en Merge ES la aprobación), Require status checks → check "Lint, test y build", Block force pushes. NO activar "Require deployments to succeed" (los Environments de GitHub no se usan; el deploy es nativo de Cloudflare y bloquearía la rama para siempre).
+
+### Estado de builds
+
+- `npm run build` local y en Cloudflare: OK, ~287 kB iniciales / ~80 kB transferibles.
+- Deploy de producción desde `main`: OK (verificado por el desarrollador en `https://voltsman.luisleongomez98.workers.dev/`).
+- Preview deploy desde `dev`: OK tras el fix de `previews` + Preview command con `cd sitio-web &&`.
+- GitHub Actions (lint+test+build): OK en ambas ramas.
+- El agente NO verifica visualmente el sitio (sin navegador); la confirmación visual la da el desarrollador.
+
+### Pendientes actualizados (vigentes)
+
+1. **Fusionar a `main` vía PR el fix de `previews` en `wrangler.jsonc`** (commit `20e811b0` está solo en `dev`) — y de paso probar el ruleset recién creado. Si el PR tarda en mostrar el check "Lint, test y build", es que GitHub necesita que el workflow corra una vez en el PR.
+2. Reemplazar `servicios/electricidad.jpeg` por un JPEG real (sigue siendo un AVIF con extensión cambiada).
+3. Resto de las 8 preguntas al cliente (falta confirmar años/equipo, detalle de estructuras metálicas, permisos/garantía, pasos reales, reseñas) y limpiar los `// TODO cliente` de `shared/content.ts`.
+4. Aprobación final de la preselección de fotos reales (`fotografias_reales/seleccion_web/MANIFEST.md`).
+5. Backend FastAPI del formulario (sin construir) y dominio .cl en NIC Chile (sin registrar). Con el dominio: conectarlo en Cloudflare → Worker `voltsman` → Settings → Domains & Routes.

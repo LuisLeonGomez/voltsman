@@ -29,7 +29,7 @@ export function linkWhatsapp(mensaje = ''): string {
 }
 
 export interface Servicio {
-  id: 'electricidad' | 'estructuras-metalicas' | 'gasfiteria-sanitarios';
+  id: 'electricidad' | 'estructuras-metalicas' | 'gasfiteria-sanitarios' | 'tabiqueria';
   titulo: string;
   resumen: string;
   detalle: string[];
@@ -65,6 +65,15 @@ export const SERVICIOS: Servicio[] = [
     titulo: 'Gasfitería y proyectos sanitarios',
     resumen: 'Redes de agua, gas y sistemas sanitarios.',
     detalle: ['Redes de PPR, cobre, gas y agua'],
+  },
+  {
+    id: 'tabiqueria',
+    titulo: 'Tabiquería',
+    resumen: 'Montaje de tabiques y divisiones interiores.',
+    // TODO cliente: aún no entregó el detalle técnico de esta especialidad
+    // (equivalente al de electricidad y gasfitería). No inventar alcances.
+    detalle: [],
+    pendiente: true,
   },
 ];
 
