@@ -14,19 +14,21 @@ El sitio esta en `sitio-web/` (Angular). Comandos principales desde esa carpeta:
 
 ## CI/CD
 
-En `.github/workflows/ci-cd.yml`:
+**GitHub Actions** (`.github/workflows/ci-cd.yml`):
+- En cada push o pull request a `dev` o `main`: lint, tests y build (control de calidad).
+- Si algo falla en lint o test, el PR/push se marca como fallido (pero no bloquea el deploy, que lo maneja Cloudflare).
 
-- En cada push o pull request a `dev` o `main`: lint, tests y build (si algo falla, no se despliega).
-- En cada push a `dev`: ademas se despliega a la URL de vista previa `https://dev.voltsman.pages.dev` (para mostrarle avances al cliente sin tocar produccion).
-- En cada push a `main`: se despliega a produccion `https://voltsman.pages.dev` (y al dominio propio cuando se conecte).
+**Cloudflare** (conectado directamente al repo):
+- En cada push a `main`: Cloudflare construye y despliega automáticamente a producción (`https://voltsman.luisleongomez98.workers.dev/`).
+- En cada push a `dev` (u otras ramas): Cloudflare genera una URL de vista previa (ej: `https://dev.voltsman.luisleongomez98.workers.dev/`).
+- El sitio se sirve como "static assets" de un Cloudflare Worker (`sitio-web/wrangler.jsonc`).
 
-### Preparar el proyecto en Cloudflare (una sola vez)
+### Configuración (ya hecha)
 
-Cloudflare fusiono Pages dentro de "Workers & Pages" en el dashboard, por lo que el asistente de "Create an app" que aparece primero es para Workers (requiere `wrangler.toml` y comandos de build) y no es el flujo que usamos aqui. En su lugar:
+1. ✅ Cloudflare conectado al repo de GitHub (`voltsman`).
+2. ✅ Rama de producción: `main`.
+3. ✅ Build command: `cd sitio-web && npm install && npm run build`.
+4. ✅ Deploy command: `npx wrangler deploy`.
+5. ✅ Preview builds habilitados (para `dev` y otras ramas).
 
-1. En el dashboard de Cloudflare, ir a **Workers & Pages > Pages > Crear un proyecto > Subir activos (Upload assets)**, sin conectar GitHub (el despliegue lo hace GitHub Actions, no Cloudflare).
-2. Nombrar el proyecto `voltsman` y subir cualquier carpeta de relleno la primera vez (el primer deploy real desde GitHub Actions lo sobreescribe).
-3. En GitHub, configurar en Settings > Secrets and variables > Actions:
-   - `CLOUDFLARE_API_TOKEN`: token con permiso "Cloudflare Pages: Edit".
-   - `CLOUDFLARE_ACCOUNT_ID`: ID de la cuenta de Cloudflare.
-4. Cuando el dominio `.cl` este listo, se conecta solo a la rama de produccion (`main`) desde **Workers & Pages > voltsman > Custom domains**; la URL de vista previa de `dev` sigue siendo la de `pages.dev`.
+Cuando el dominio `.cl` esté listo, se conecta a la rama `main` desde **Workers & Pages > voltsman > Settings > Domains & Routes**.

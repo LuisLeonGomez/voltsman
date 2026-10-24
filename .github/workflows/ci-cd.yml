@@ -44,35 +44,4 @@ jobs:
           path: sitio-web/dist/sitio-web-constructora/browser
           retention-days: 7
 
-  deploy:
-    name: Deploy a Cloudflare Pages
-    needs: ci
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Descargar codigo
-        uses: actions/checkout@v4
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: sitio-web/package-lock.json
-
-      - name: Instalar dependencias
-        run: npm ci
-
-      - name: Build de produccion
-        run: npm run build
-
-      - name: Deploy con Wrangler
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: sitio-web
-          # main despliega a produccion (voltsman.pages.dev); dev genera la URL
-          # de vista previa dev.voltsman.pages.dev. El --branch le dice a
-          # Cloudflare Pages a cual de las dos URLs publicar.
-          command: pages deploy dist/sitio-web-constructora/browser --project-name=voltsman --branch=${{ github.ref_name }}
