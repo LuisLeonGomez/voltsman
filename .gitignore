@@ -8,6 +8,12 @@ sitio-web/.angular/
 # Skills y configuración local del asistente (no es código del proyecto)
 .abacusai/
 
+# Material de referencia (no se usa en el código del sitio)
+banco_fotos/
+
+# Caché de Wrangler
+sitio-web/tmp/
+
 # Entorno / sistema
 .DS_Store
 Thumbs.db

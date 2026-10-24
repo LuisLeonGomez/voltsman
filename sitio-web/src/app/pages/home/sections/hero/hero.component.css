@@ -7,7 +7,7 @@
   place-items: center;
   background:
     linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.94)),
-    url('/assets/images/electricidad/electricidad-01.jpeg') center / cover no-repeat;
+    url('/assets/images/decorativas/hero-fondo.jpg') center / cover no-repeat;
 }
 
 .hero__contenido {

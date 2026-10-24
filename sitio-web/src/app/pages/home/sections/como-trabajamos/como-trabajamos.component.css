@@ -20,7 +20,35 @@
 .como-trabajamos h3 {
   font-size: clamp(1.5rem, 3vw, 1.9rem);
   letter-spacing: -0.01em;
+  margin-bottom: 0;
+}
+
+.como-trabajamos__encabezado {
   margin-bottom: 2.25rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.como-trabajamos__encabezado img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+@media (min-width: 900px) {
+  .como-trabajamos__encabezado {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+  }
+
+  .como-trabajamos__encabezado img {
+    height: 260px;
+  }
 }
 
 .como-trabajamos__pasos {

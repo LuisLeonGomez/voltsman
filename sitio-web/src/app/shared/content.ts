@@ -13,14 +13,14 @@
  */
 
 export const EMPRESA = {
-  // TODO cliente: nombre real de la empresa. Mientras tanto se usa un placeholder visible.
-  nombre: 'Nombre de la empresa (pendiente)',
+  nombre: 'VOLSTMAN',
   eslogan: 'Electricidad, estructuras metálicas y proyectos sanitarios',
   whatsapp: '56963263751', // confirmado por el cliente
   whatsappDisplay: '+56 9 6326 3751',
   // TODO cliente: correo de contacto real, si existe.
   correo: '',
   cobertura: 'Todo Chile, de Arica a Punta Arenas',
+  certificado: 'Técnico Electricista certificado por la Superintendencia de Electricidad y Combustibles (SEC)',
 };
 
 export function linkWhatsapp(mensaje = ''): string {

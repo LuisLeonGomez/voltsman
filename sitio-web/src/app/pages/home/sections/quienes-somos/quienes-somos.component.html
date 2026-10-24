@@ -22,16 +22,15 @@
     <!-- Espacio reservado para la foto del cliente. Al soltarla en
          src/assets/images/equipo/quienes-somos.jpeg cubre el recuadro por sí sola. -->
     <div class="quienes-somos__media">
-      <div class="quienes-somos__placeholder" aria-hidden="true">
-        <span>Foto del equipo o de una obra</span>
-      </div>
-      @if (!imagenRota()) {
+      @if (imagenRota()) {
+        <div class="quienes-somos__placeholder" aria-hidden="true">
+          <span>Foto del equipo o de una obra</span>
+        </div>
+      } @else {
         <img
           [src]="rutaImagen"
           alt="Nuestro equipo en faena"
           loading="lazy"
-          [class.quienes-somos__img--visible]="imagenLista()"
-          (load)="imagenOk()"
           (error)="imagenFallo()"
         />
       }
