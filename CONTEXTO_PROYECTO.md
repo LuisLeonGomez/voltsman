@@ -154,9 +154,11 @@ Pendiente real:
 - No introducir un CMS, backend, base de datos o servicios de pago sin justificarlo y consultarlo.
 - Leer este documento aporta contexto al agente, pero no sincroniza automáticamente el historial del chat.
 
-## 11. ESTADO ACTUAL DEL TRABAJO — leer esto primero (actualizado al 17-oct-2026)
+## 11. ESTADO ACTUAL DEL TRABAJO — leer esto primero (actualizado al 23-oct-2026)
 
 Este documento es el punto de reanudación para un nuevo chat. Resume exactamente dónde quedó el trabajo y qué falta.
+
+**Nota:** la sección 11.bis (más abajo) tiene el detalle de lo avanzado entre el 17 y el 23 de octubre (nombre real, certificación SEC, corrección de un bug real de visibilidad de fotos, banco de fotos decorativas y estado de las fotos de servicios). Esta sección 11 original se deja tal cual quedó el 17-oct como referencia histórica; para el estado más reciente, ir directo a 11.bis.
 
 ### Lo que YA está hecho
 
@@ -188,3 +190,44 @@ Este documento es el punto de reanudación para un nuevo chat. Resume exactament
 - `ng serve` escucha en IPv6 (`http://localhost:4200`); si un curl falla contra `127.0.0.1`, probar `http://[::1]:4200`. Si el servidor no responde, relanzar `npm run start` en `sitio-web/`.
 - Estilos: CSS plano por componente con tokens en `src/styles.css` (paleta azul marino #0f172a + acento verde #22c55e), sin frameworks de UI.
 - El MCP de Magnific sugerido por el desarrollador es de Claude Code (otra herramienta, no conectable aquí) y genera imágenes con IA: NO usarlas como "obras reales" del cliente; solo como ambiente decorativo si trae una con licencia.
+
+## 11.bis ESTADO ACTUAL DEL TRABAJO — actualizado al 23-oct-2026
+
+### Lo que se avanzó desde el 17-oct
+
+1. **Nombre real confirmado por el cliente: "Volstman"**. Ya actualizado en `shared/content.ts` (`EMPRESA.nombre`), se refleja automáticamente en header, hero, footer y todo el sitio. El repositorio en GitHub se llama `voltsman` (con "t", nota la diferencia de ortografía respecto al nombre comercial "Volstman"; no se ha unificado, no es bloqueante pero queda anotado).
+
+2. **Certificación SEC confirmada y agregada**: el cliente es Técnico Electricista certificado por la Superintendencia de Electricidad y Combustibles (SEC). Se agregó:
+   - Logo oficial de la SEC en `src/assets/images/sec-logo.jpg` (provisto por el cliente en `banco_fotos/sec.jpg`).
+   - Texto de certificación en `EMPRESA.certificado` (`shared/content.ts`).
+   - Bloque visible en el footer (`core/footer/`) con el logo y el texto, separado del resto por una línea divisoria.
+
+3. **Bug real encontrado y corregido: la foto de "Quiénes somos" no se veía**. La causa NO era el archivo, el servidor ni la caché del navegador (todo eso se verificó correcto): era un bug de especificidad CSS. La regla `.quienes-somos__media img { opacity: 0; }` tenía más especificidad que `.quienes-somos__img--visible { opacity: 1; }`, así que la imagen quedaba invisible aunque cargara perfectamente. Se simplificó el patrón en `pages/home/sections/quienes-somos/`: ahora la imagen se muestra directamente con `<img [src]="rutaImagen">`, sin juego de opacidad ni eventos `(load)`; el recuadro punteado solo aparece si la carga realmente falla (`(error)`). El componente de `servicios` ya usaba el patrón correcto (sin el bug) y no necesitó cambios.
+
+4. **Repositorio Git ya existe** (lo creó el desarrollador, no se hizo desde este chat): rama `dev` sobre rama principal `main`, remoto `https://github.com/LuisLeonGomez/voltsman`, con commits `adf860a` (Initial commit) y `f44e555` ("feat: primera version del sitio"). El punto 4 de la lista de pendientes del 17-oct ("GitHub no existe") queda resuelto; falta solo confirmar con el desarrollador el flujo de PRs dev→main y conectar Cloudflare Pages (sección 5 y 9 de este documento siguen pendientes).
+
+5. **Banco de fotos decorativas (`banco_fotos/`, carpeta fuera de `sitio-web/`, con fotos de stock que el cliente consiguió)**: se usaron 3, comprimidas y copiadas a `src/assets/images/decorativas/` (de 10-15 MB bajaron a 130-234 KB cada una):
+   - `hero-fondo.jpg` → fondo del título principal (hero).
+   - `electricidad-detalle.jpg` → fondo de la banda de CTA ("banda-obra").
+   - `planificacion.jpg` → foto nueva junto al título de "Cómo trabajamos".
+   
+   **Regla aplicada y que debe mantenerse**: estas fotos de banco son solo decorativas/ambientales (fondos, texturas). NUNCA deben presentarse como fotos de obras reales de la empresa — ese rol lo cumple exclusivamente `fotografias_reales/`, usada en la galería y en `proyectos-preview`. El resto de `banco_fotos/` (hay ~17 archivos, varios en formato `.avif`/`.webp`) sigue sin usar; estas fotos siguen sin trackear en git.
+
+6. **Fotos de servicios (`src/assets/images/servicios/`): 2 de 3 ok, 1 con problema de formato**. El cliente ya colocó las tres:
+   - `estructuras-metalicas.jpeg` y `gasfiteria-sanitarios.jpeg`: son JPEG reales y válidos (verificado por los bytes de cabecera del archivo), el servidor las sirve con HTTP 200 — deberían verse bien.
+   - `electricidad.jpeg`: **el archivo no es un JPEG real**, es un AVIF (probablemente una de las fotos de `banco_fotos/*.avif`) al que solo le cambiaron la extensión a `.jpeg` sin convertir el contenido. El navegador puede no mostrarlo de forma confiable. No hay herramienta de conversión AVIF→JPEG disponible en este entorno (sin ImageMagick, sin soporte AVIF en Python/GDI+). **Pendiente: el cliente/desarrollador debe volver a exportar esa foto específica como JPEG real** (por ejemplo con la app Fotos de Windows, "Guardar como" eligiendo JPEG) y reemplazar el archivo.
+
+### Estado de la build y el servidor
+
+- `npm run build` compila sin errores con todos los cambios de esta sección (último build: bundle inicial ~287 kB / ~80 kB transferible).
+- Hay un `ng serve` corriendo en segundo plano en `http://localhost:4200` (IPv6: `http://[::1]:4200`) para pruebas locales del desarrollador.
+- Toda la verificación de este período se hizo por HTTP (status code, content-type, tamaño y cabecera de bytes de archivo) y por compilación exitosa; el agente NO tiene herramienta de navegador/captura de pantalla, por lo que la confirmación visual final siempre la debe dar el desarrollador recargando con Ctrl+F5.
+
+### Pendientes (vigentes, no repetir lo ya resuelto arriba)
+
+1. Reemplazar `servicios/electricidad.jpeg` por un JPEG real (ver punto 6 arriba).
+2. Las 8 preguntas ya enviadas al cliente (marca/logo más allá del nombre, contacto visible, años de experiencia y tamaño del equipo, detalle técnico de estructuras metálicas, permisos/garantía, pasos reales de trabajo, reseñas, envío de fotos) — revisar cuáles ya se respondieron (nombre y SEC sí; falta confirmar el resto) y actualizar `// TODO cliente` en `shared/content.ts` y las plantillas a medida que lleguen respuestas.
+3. Aprobación final de la preselección de fotos reales (`fotografias_reales/seleccion_web/MANIFEST.md`).
+4. Confirmar y documentar el flujo real de ramas (dev/main) y conectar Cloudflare Pages para despliegue automático.
+5. Backend FastAPI del formulario de contacto (sigue sin construir) y dominio .cl (sigue sin registrar).
+6. Nada de lo nuevo en este período se ha subido a git todavía (los cambios de este chat están solo en el working directory local); el desarrollador decide cuándo commitear.

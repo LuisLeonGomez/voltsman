@@ -47,7 +47,7 @@ jobs:
   deploy:
     name: Deploy a Cloudflare Pages
     needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     runs-on: ubuntu-latest
     steps:
       - name: Descargar codigo
@@ -72,4 +72,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: sitio-web
-          command: pages deploy dist/sitio-web-constructora/browser --project-name=voltsman
+          # main despliega a produccion (voltsman.pages.dev); dev genera la URL
+          # de vista previa dev.voltsman.pages.dev. El --branch le dice a
+          # Cloudflare Pages a cual de las dos URLs publicar.
+          command: pages deploy dist/sitio-web-constructora/browser --project-name=voltsman --branch=${{ github.ref_name }}
