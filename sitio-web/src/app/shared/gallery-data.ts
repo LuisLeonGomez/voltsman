@@ -28,7 +28,7 @@ export const GALERIA: CategoriaGaleria[] = [
     id: 'electricidad',
     titulo: 'Instalaciones eléctricas',
     video: 'assets/images/electricidad/electricidad-video-01.mp4',
-    fotos: generarFotos('electricidad', 'electricidad', 29, 'Trabajo de electricidad'),
+    fotos: generarFotos('electricidad', 'electricidad', 28, 'Trabajo de electricidad'),
   },
   {
     id: 'estructuras-metalicas',
@@ -38,7 +38,7 @@ export const GALERIA: CategoriaGaleria[] = [
   {
     id: 'gasfiteria-sanitarios',
     titulo: 'Gasfitería y proyectos sanitarios',
-    fotos: generarFotos('gasfiteria-sanitarios', 'gasfiteria', 22, 'Trabajo de gasfitería'),
+    fotos: generarFotos('gasfiteria-sanitarios', 'gasfiteria', 23, 'Trabajo de gasfitería'),
   },
   {
     id: 'tabiqueria',
