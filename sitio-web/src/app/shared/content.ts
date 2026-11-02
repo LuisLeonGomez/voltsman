@@ -55,9 +55,12 @@ export const SERVICIOS: Servicio[] = [
     id: 'estructuras-metalicas',
     titulo: 'Estructuras metálicas',
     resumen: 'Fabricación y montaje de estructuras de acero.',
-    // TODO cliente: aún no entregó el detalle técnico de esta especialidad
-    // (equivalente al de electricidad y gasfitería). No inventar alcances.
-    detalle: [],
+    detalle: [
+      'Proyectos Industriales: Fabricación y montaje de galpones, naves industriales, almacenes y cobertizos de grandes luces libres',
+      'Construcción Comercial y Residencial: Edificios de oficinas, ampliaciones de segundos pisos, altillos (mezzanines) y estructuras para centros comerciales',
+      'Obras Civiles y Especiales: Pasarelas, escaleras de emergencia, soportes estructurales y refuerzos metálicos'
+
+    ],
     pendiente: true,
   },
   {
@@ -70,9 +73,9 @@ export const SERVICIOS: Servicio[] = [
     id: 'tabiqueria',
     titulo: 'Tabiquería',
     resumen: 'Montaje de tabiques y divisiones interiores.',
-    // TODO cliente: aún no entregó el detalle técnico de esta especialidad
-    // (equivalente al de electricidad y gasfitería). No inventar alcances.
-    detalle: [],
+    detalle: [
+      'Tabiquería en seco: Utiliza estructuras metálicas o de madera combinadas con placas de yeso laminado (como Yesocartón, Pladur o Volcanita). Es rápida de instalar, limpia y ligera'
+    ],
     pendiente: true,
   },
 ];
