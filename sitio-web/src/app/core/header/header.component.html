@@ -1,8 +1,8 @@
 <header class="site-header">
   <div class="site-header__bar">
     <a routerLink="/" class="site-header__brand" (click)="cerrarMenu()">
-      <!-- TODO cliente: reemplazar este bloque por el logo real (<img src="assets/logo.svg" alt="...">). -->
-      <span class="site-header__logo-placeholder" aria-label="Espacio reservado para el logo">LOGO</span>
+      <!-- Logo: coloca tu archivo en sitio-web/src/assets/logo.png (PNG, idealmente con fondo transparente). -->
+      <img src="assets/logo.png" alt="Logo de {{ empresa.nombre }}" class="site-header__logo" />
       <span class="site-header__nombre">{{ empresa.nombre }}</span>
     </a>
 

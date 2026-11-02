@@ -33,17 +33,11 @@
   opacity: 0.8;
 }
 
-.site-header__logo-placeholder {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
+.site-header__logo {
+  display: block;
   height: 40px;
-  border: 1px dashed rgba(248, 250, 252, 0.5);
-  border-radius: 8px;
-  font-size: 0.65rem;
-  letter-spacing: 0.05em;
-  color: rgba(248, 250, 252, 0.7);
+  width: auto;
+  flex-shrink: 0;
 }
 
 .site-header__nombre {
