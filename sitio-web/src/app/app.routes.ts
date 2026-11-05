@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
-    title: 'Volstman | Electricidad, estructuras metálicas y gasfitería',
+    title: 'WEKITO | Electricidad, estructuras metálicas y gasfitería',
   },
   {
     path: 'galeria',
